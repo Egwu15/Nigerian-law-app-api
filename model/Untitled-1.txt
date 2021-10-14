@@ -1,0 +1,120 @@
+{
+    "Laws": [
+        {
+            "lawName: contract law",
+                content:
+                    [
+                        {
+                            section: 1,
+                            SectionContent:the law of the land...
+                        },
+                        {
+                            section: 2,
+                            SectionContent:the law of the land...
+                            },
+                        {
+                            section: 3,
+                            SectionContent:the law of the land...
+                            },
+                        {
+                            section: 4,
+                            SectionContent:the law of the land...
+                            },
+                    ]
+        
+        },
+        {
+            "lawName: contract law",
+                content:  [
+                        {
+                            section: 1,
+                            SectionContent:the law of the land...
+                        },
+                        {
+                            section: 2,
+                            SectionContent:the law of the land...
+                            },
+                        {
+                            section: 3,
+                            SectionContent:the law of the land...
+                            },
+                        {
+                            section: 4,
+                            SectionContent:the law of the land...
+                            },
+                    ]
+        
+        },
+    ]
+        
+}
+
+const router = require("express").Router();
+const Law = require("../model/Law.model");
+const { lawValidation, lawSectionValidation } = require('../validation');
+
+
+// add law
+router.post("/", async (req, res) => {
+    const { error } = lawValidation(req.body,);
+    if (error) {
+        return res.send(error['details'][0]['message']);
+    }
+    const lawExist = await Law.findOne({ email: req.body.law_name });
+    if (lawExist) return res.status(400).send({ "error": "Law already exist" });
+
+    const law = new Law({
+        law_name: req.body.law_name,
+        description: req.body.description
+    });
+    try {
+        savedLaw = await law.save();
+        res.send({
+            law_name: req.body.law_name,
+            description: req.body.description
+        })
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+//ADD SECTION
+
+router.post("/:law", (req, res) => {
+    const { error } = lawSectionValidation(req.body,);
+    if (error) {
+        return res.send(error['details'][0]['message']);
+    }
+
+    Law.findOne({ law_name: req.params.law }, function (error, response) {
+        if (error) {
+            res.send(error);
+        }
+        else {
+            Law.findOne({ "law_content.section": req.body.section }).then((lawExists) => {
+
+                if (lawExists) return res.status(400).send({ "error": "Law already exist" })
+                else {
+
+                    response.law_content.push({
+                        section: req.body.section,
+                        content: req.body.content
+                    })
+                    response.save();
+                    console.log(response)
+                }
+            });
+
+        }
+
+    });
+
+    // res.send(law.law_name);
+    // console.log(law);
+});
+
+// VIEW ALL LAWS
+
+// router.get('/', (re))
+
+module.exports = router;

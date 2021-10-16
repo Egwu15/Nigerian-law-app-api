@@ -37,8 +37,16 @@ const lawSectionValidation = data => {
 
     return schema.validate(data);
 }
+const lawSectionOnlyValidation = data => {
+    const schema = joi.object({
+        section: joi.number().min(1).required(),
+    });
+
+    return schema.validate(data);
+}
 
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.lawValidation = lawValidation;
 module.exports.lawSectionValidation = lawSectionValidation;
+module.exports.lawSectionOnlyValidation = lawSectionOnlyValidation;

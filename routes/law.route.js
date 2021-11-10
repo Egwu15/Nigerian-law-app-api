@@ -31,6 +31,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+// SEARCH ALL SECTIONS
+router.get("/search/:search", async (req, res) => {
+  const law = await Law.find(
+    {
+      "law_content.content": { $regex: req.params.search, $options: "i" },
+    },
+    {
+      law_content: {
+        $elemMatch: { content: { $regex: req.params.search, $options: "i" } },
+      },
+      law_name: 1,
+    }
+  );
+
+  res.send(law);
+});
+
 //ADD SECTION
 
 router.post("/:law", (req, res) => {
@@ -43,24 +60,25 @@ router.post("/:law", (req, res) => {
     if (!response) {
       return res.json({ error: "no such law exists" });
     } else {
-      Law.findOne({ "law_content.section": req.body.section }).then(
-        (lawExists) => {
-          if (lawExists)
-            return res.status(400).send({ error: "Section already exist" });
-          else {
-            try {
-              response.law_content.push({
-                section: req.body.section,
-                content: req.body.content,
-              });
-              response.save();
-              return res.json(response);
-            } catch (error) {
-              res.json({ error: error });
-            }
+      Law.findOne({
+        law_name: req.params.law,
+        "law_content.section": req.body.section,
+      }).then((lawExists) => {
+        if (lawExists)
+          return res.status(400).send({ error: "Section already exist" });
+        else {
+          try {
+            response.law_content.push({
+              section: req.body.section,
+              content: req.body.content,
+            });
+            response.save();
+            return res.json(response);
+          } catch (error) {
+            res.json({ error: error });
           }
         }
-      );
+      });
     }
   });
 
@@ -124,20 +142,10 @@ router.delete("/:law", async (req, res) => {
           },
           {
             $pull: { law_content: { section: req.body.section } },
-
-            // function(err, result) {
-            //   console.log(err);
-            //   console.log(result);
-
-            //   if (!result) {
-            //     return res.status(400).send({"error": err });
-            //   }
-            //    return res.send(result);
-            // },
           },
           { fields: { law_content: 1 }, new: true }
         );
-        res.json({ "staus" : "deleted", data : law})
+        res.json({ staus: "deleted", data: law });
       } else return res.json({ error: "the law dosen't exist" });
     });
   } catch (error) {

@@ -4,6 +4,7 @@ const express = require("express");
 const authRoutes = require("./routes/auth");
 const mongoose = require('mongoose');
 const lawRoutes = require("./routes/law.route");
+const objRoutes = require("./routes/obj.route");
 
 
 dotenv.config();
@@ -16,6 +17,7 @@ mongoose.connect(process.env.DB_CONNECT, () => console.log("connected to the dat
 // app.use(express.json);
 app.use('/api/users', authRoutes);
 app.use('/api/laws', lawRoutes);
+app.use('/api/obj', objRoutes);
 //ROUTES
 
 

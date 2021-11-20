@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { findById } = require("../model/Obj.model");
 const Obj = require("../model/Obj.model");
 const { objValidation } = require("../validation");
 const mongoose = require("mongoose");
@@ -32,6 +31,14 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   const obj = await Obj.find();
   res.json({ data: obj });
+});
+
+// GET CATEGORIES
+router.get("/categories",  (req, res) => {
+Obj.find().distinct("course", function(error, obj){
+  return res.json({ data: obj });
+});
+
 });
 
 // UPDATE QUESTION

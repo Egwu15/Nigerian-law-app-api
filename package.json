@@ -4,8 +4,13 @@
   "description": "law api with auth",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Egwu15/Nigerian-law-app-api.git"
+},
   "keywords": [
     "law.",
     "auth",
@@ -22,5 +27,9 @@
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.9"
+  },
+  "engines": {
+    "node": "14.17.0"
   }
+  
 }

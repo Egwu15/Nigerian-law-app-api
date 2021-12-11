@@ -10,6 +10,10 @@ router.post("/", async (req, res) => {
     return res.send(error["details"][0]["message"]);
   }
 
+  //CHECKING IF THE QUESTION EXISTS
+  const question = await Obj.findOne({ question: req.body.question });
+  if (question)
+    return res.status(400).send({ error: "Question already exists" });
   const obj = new Obj({
     question: req.body.question,
     option_a: req.body.option_a,
@@ -34,11 +38,10 @@ router.get("/", async (req, res) => {
 });
 
 // GET CATEGORIES
-router.get("/categories",  (req, res) => {
-Obj.find().distinct("course", function(error, obj){
-  return res.json({ data: obj });
-});
-
+router.get("/categories", (req, res) => {
+  Obj.find().distinct("course", function (error, obj) {
+    return res.json({ data: obj });
+  });
 });
 
 // UPDATE QUESTION

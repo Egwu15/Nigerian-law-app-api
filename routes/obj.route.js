@@ -2,9 +2,10 @@ const router = require("express").Router();
 const Obj = require("../model/Obj.model");
 const { objValidation } = require("../validation");
 const mongoose = require("mongoose");
+const verify = require("../routes/verifyToken verify,")
 
 // ADD NEW QUESTION
-router.post("/", async (req, res) => {
+router.post("/", verify, async (req, res) => {
   const { error } = objValidation(req.body);
   if (error) {
     return res.send(error["details"][0]["message"]);
@@ -45,7 +46,7 @@ router.get("/categories", (req, res) => {
 });
 
 // UPDATE QUESTION
-router.patch("/", async (req, res) => {
+router.patch("/", verify, async (req, res) => {
   const { error } = objValidation(req.body);
   if (error) {
     return res.send(error["details"][0]["message"]);
@@ -78,7 +79,7 @@ router.patch("/", async (req, res) => {
 });
 
 //DELETE QUESTIONS
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verify, async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id))
     return res.status(400).json({ error: "id not valid" });
   // let obj = await Obj.findById(req.body.id);

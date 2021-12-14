@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Law = require("../model/Law.model");
+const verify = require("../routes/verifyToken");
 const {
   lawValidation,
   lawSectionValidation,
@@ -7,7 +8,7 @@ const {
 } = require("../validation");
 
 // add law
-router.post("/", async (req, res) => {
+router.post("/", verify, async (req, res) => {
   const { error } = lawValidation(req.body);
   if (error) {
     return res.send(error["details"][0]["message"]);
@@ -50,7 +51,7 @@ router.get("/search/:search", async (req, res) => {
 
 //ADD SECTION
 
-router.post("/:law", (req, res) => {
+router.post("/:law",verify, (req, res) => {
   const { error } = lawSectionValidation(req.body);
   if (error) {
     return res.send(error["details"][0]["message"]);
@@ -88,7 +89,7 @@ router.post("/:law", (req, res) => {
 
 // VIEW ALL LAWS
 
-router.get("/", async (req, res) => {
+router.get("/", verify, async (req, res) => {
   const laws = await Law.find({}, { law_name: 1, description: 1 });
   res.json(laws);
 });
@@ -103,7 +104,7 @@ router.get("/:law", async (req, res) => {
 });
 
 //UPDATE SECTION
-router.patch("/:law", async (req, res) => {
+router.patch("/:law", verify, async (req, res) => {
   const { error } = lawSectionValidation(req.body);
   if (error) {
     return res.send(error["details"][0]["message"]);
@@ -124,7 +125,7 @@ router.patch("/:law", async (req, res) => {
 });
 
 // DELETE A SECTION
-router.delete("/:law", async (req, res) => {
+router.delete("/:law", verify, async (req, res) => {
   const { error } = lawSectionOnlyValidation(req.body);
   if (error) {
     return res.send(error["details"][0]["message"]);

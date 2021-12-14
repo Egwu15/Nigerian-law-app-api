@@ -52,10 +52,10 @@ router.post('/login', async (req, res) => {
 
     //COMPARING PASSWORD
     const validPass = await bcrypt.compare(req.body.password, user.password);
-    if (!validPass) return res.status(400).send({ "error": "password is not valid" });
+    if (!validPass) return res.status(401).send({ "error": "password is not valid" });
 
     //GENERATING TOKEN
     const token = jwt.sign({ email: user.email }, process.env.TOKEN_SECREAT);
-    res.header("Authorization", token).send(token);
+    res.header("Authorization", token).send({"data" : token});
 });
 module.exports = router;

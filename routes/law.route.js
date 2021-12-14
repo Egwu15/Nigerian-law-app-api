@@ -89,7 +89,7 @@ router.post("/:law",verify, (req, res) => {
 
 // VIEW ALL LAWS
 
-router.get("/", verify, async (req, res) => {
+router.get("/", async (req, res) => {
   const laws = await Law.find({}, { law_name: 1, description: 1 });
   res.json(laws);
 });

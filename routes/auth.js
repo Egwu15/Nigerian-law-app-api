@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
     //VALIDATION
     const { error } = loginValidation(req.body);
     if (error) {
-        return res.send(error['details'][0]['message']);
+        return res.status(401).send(error['details'][0]['message']);
     }
 
     //CHECKING IF EMAIL EXIST

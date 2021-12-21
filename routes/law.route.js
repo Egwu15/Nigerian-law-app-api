@@ -11,7 +11,7 @@ const {
 router.post("/", verify, async (req, res) => {
   const { error } = lawValidation(req.body);
   if (error) {
-    return res.send(error["details"][0]["message"]);
+    return res.status(400).send(error["details"][0]["message"]);
   }
   const lawExist = await Law.findOne({ law_name: req.body.law_name });
   console.log(lawExist);
@@ -54,7 +54,7 @@ router.get("/search/:search", async (req, res) => {
 router.post("/:law",verify, (req, res) => {
   const { error } = lawSectionValidation(req.body);
   if (error) {
-    return res.send(error["details"][0]["message"]);
+    return res.status(400).send(error["details"][0]["message"]);
   }
 
   Law.findOne({ law_name: req.params.law }, function (error, response) {
@@ -107,7 +107,7 @@ router.get("/:law", async (req, res) => {
 router.patch("/:law", verify, async (req, res) => {
   const { error } = lawSectionValidation(req.body);
   if (error) {
-    return res.send(error["details"][0]["message"]);
+    return res.status(400).send(error["details"][0]["message"]);
   }
   try {
     const law = await Law.findOneAndUpdate(

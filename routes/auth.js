@@ -48,11 +48,11 @@ router.post('/login', async (req, res) => {
 
     //CHECKING IF EMAIL EXIST
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send({ "error": "Email does not exist" });
+    if (!user) return res.status(400).send({ "error": "Invalid email or password" });
 
     //COMPARING PASSWORD
     const validPass = await bcrypt.compare(req.body.password, user.password);
-    if (!validPass) return res.status(401).send({ "error": "password is not valid" });
+    if (!validPass) return res.status(401).send({ "error": "Invalid email or password" });
 
     //GENERATING TOKEN
     const token = jwt.sign({ email: user.email }, process.env.TOKEN_SECREAT);

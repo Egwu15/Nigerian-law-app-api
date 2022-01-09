@@ -34,15 +34,25 @@ router.post("/", verify, async (req, res) => {
 
 // GET ALL QUESTIONS
 router.get("/", async (req, res) => {
-  const obj = await Obj.find();
-  res.json({ data: obj });
+  try {
+    const obj = await Obj.find();
+    res.json({ data: obj });
+  } catch (error) {
+    res.send(error);
+  }
 });
 
-// GET CATEGORIES
-router.get("/categories", (req, res) => {
+// GET COURSES
+router.get("/courses", (req, res) => {
   Obj.find().distinct("course", function (error, obj) {
     return res.json({ data: obj });
   });
+});
+
+// FIND QUESTION FROM PARTICULAR COURSE
+router.get("/course/:co", async (req, res) => {
+  const obj = await Obj.find({ course: req.params.co });
+  res.json({ data: obj });
 });
 
 // UPDATE QUESTION

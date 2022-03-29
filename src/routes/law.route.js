@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Law = require("../model/Law.model");
-const verify = require("../routes/verifyToken");
+const verify = require("./verifyToken");
 const {
   lawValidation,
   lawSectionValidation,
@@ -22,7 +22,7 @@ router.post("/", verify, async (req, res) => {
     description: req.body.description,
   });
   try {
-    savedLaw = await law.save();
+    await law.save();
     res.send({
       law_name: req.body.law_name,
       description: req.body.description,
@@ -90,6 +90,7 @@ router.post("/:law",verify, (req, res) => {
 // VIEW ALL LAWS
 
 router.get("/", async (req, res) => {
+  console.log("viewing  laws");
   const laws = await Law.find({}, { law_name: 1, description: 1 });
   res.json(laws);
 });

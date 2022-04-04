@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const Obj = require("../model/Obj.model");
-const { objValidation } = require("../validation");
+const {Obj} = require("../model");
+const { objValidation } = require("../utility/validations/validation");
 const mongoose = require("mongoose");
-const verify = require("./verifyToken");
+const verify = require("../utility/verifyToken");
 
 // ADD NEW QUESTION
 router.post("/", verify, async (req, res) => {

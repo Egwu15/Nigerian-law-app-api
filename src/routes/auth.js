@@ -1,11 +1,13 @@
 const router = require("express").Router();
-const User = require('../model/User');
-const { registerValidation, loginValidation } = require("../validation");
+const {User} = require('../model');
+const { registerValidation, loginValidation } = require("../utility/validations/validation");
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const logger = require("../logger/logger")
 
 
-router.post("/register", async (req, res) => {
+
+router.post("/users/register", async (req, res) => {
     //VALIDATION
     const { error } = registerValidation(req.body,);
     if (error) {
@@ -21,13 +23,14 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
 
-    user = new User({
+    let user = new User({
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
     });
+
     try {
-        savedUser = await user.save();
+         await user.save();
 
         res.send({
             name: req.body.name,
@@ -39,8 +42,11 @@ router.post("/register", async (req, res) => {
 
 });
 
-router.post('/login', async (req, res) => {
+
+//LOGIN
+router.post('/users/login', async (req, res) => {
     //VALIDATION
+    logger.warn('reached');
     const { error } = loginValidation(req.body);
     if (error) {
         return res.status(401).send(error['details'][0]['message']);

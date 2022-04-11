@@ -2,10 +2,10 @@
   "name": "nigerian-law-app-api",
   "version": "1.0.0",
   "description": "law api with auth",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,9 @@
     "node": "14.17.0"
   },
   "devDependencies": {
-    "fecha": "^4.2.1"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.29.4"
   }
 }

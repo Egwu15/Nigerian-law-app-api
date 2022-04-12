@@ -1,15 +1,17 @@
-const dotenv = require('dotenv');
-const express = require('express');
-const mongoose = require('mongoose');
-const routes = require('./src/routes/');
-const helmet = require('helmet');
-const logger = require('./src/logger/logger');
+import dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import routes from './src/routes';
+import helmet  from "helmet";
+import logger from './src/logger/logger';
+
 
 
 dotenv.config();
 const app = express();
 app.use(express.urlencoded({extended: true}));
 app.use(helmet());
+
 
 mongoose.connect(
     process.env.DB_CONNECT,
